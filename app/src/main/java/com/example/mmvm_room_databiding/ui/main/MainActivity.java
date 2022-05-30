@@ -32,26 +32,27 @@ public class MainActivity extends AppCompatActivity {
             }
         }).get(MainViewModel.class);
 
-        mainViewModel.getListWork().observe(this, new Observer<List<WorkEntity>>() {
-            @Override
-            public void onChanged(List<WorkEntity> workEntities) {
-                Log.d("BBB", "Total: " + workEntities.size());
-            }
-        });
+//        mainViewModel.getListWork().observe(this, new Observer<List<WorkEntity>>() {
+//            @Override
+//            public void onChanged(List<WorkEntity> workEntities) {
+//                Log.d("BBB", "Total: " + workEntities.size());
+//            }
+//        });
+//
+//        mainViewModel.getIdInsert().observe(this, new Observer<Long>() {
+//            @Override
+//            public void onChanged(Long aLong) {
+//                Log.d(TAG, "Row: "+aLong);
+//            }
+//        });
+//
+//
+//        //get list work in db
+//        mainViewModel.queryListWork();
+//
+//        //insert work in db
+//        WorkEntity workEntity = new WorkEntity("to do 1", "nothing 1");
+//        mainViewModel.queryInsertWork(workEntity);
 
-        mainViewModel.getIdInsert().observe(this, new Observer<Long>() {
-            @Override
-            public void onChanged(Long aLong) {
-                Log.d(TAG, "Row: "+aLong);
-            }
-        });
-
-
-        //get list work in db
-        mainViewModel.queryListWork();
-
-        //insert work in db
-        WorkEntity workEntity = new WorkEntity("to do 1", "nothing 1");
-        mainViewModel.queryInsertWork(workEntity);
     }
 }
