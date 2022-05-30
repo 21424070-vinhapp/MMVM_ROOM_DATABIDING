@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
        mainViewModel.getListWork().observe(this, new Observer<List<WorkEntity>>() {
            @Override
            public void onChanged(List<WorkEntity> workEntities) {
-               Log.d("BBB", "onChanged: "+workEntities.size());
+               Log.d("BBB", "Total: "+workEntities.size());
            }
        });
 
