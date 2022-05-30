@@ -1,8 +1,10 @@
-package com.example.mmvm_room_databiding;
+package com.example.mmvm_room_databiding.ui.main;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.mmvm_room_databiding.R;
 
 public class MainActivity extends AppCompatActivity {
 
