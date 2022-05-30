@@ -8,6 +8,7 @@ import com.example.mmvm_room_databiding.data.model.entities.WorkEntity;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Maybe;
 import io.reactivex.rxjava3.core.Observable;
 
 public class WorkRespository {
@@ -23,4 +24,8 @@ public class WorkRespository {
         return workDao.getListWork();
     }
 
+    public Maybe<Long> insertWork(WorkEntity workEntity)
+    {
+        return workDao.insertWork(workEntity);
+    }
 }

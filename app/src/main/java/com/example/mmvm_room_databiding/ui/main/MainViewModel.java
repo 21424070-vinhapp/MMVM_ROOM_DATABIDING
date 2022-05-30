@@ -12,6 +12,7 @@ import java.util.List;
 
 public class MainViewModel extends androidx.lifecycle.ViewModel {
     private MutableLiveData<List<WorkEntity>>  listWork=new MutableLiveData<>();
+    private MutableLiveData<Long>  idInsert=new MutableLiveData<>();
     private WorkRespository workRespository;
     private Context context;
 
@@ -25,7 +26,16 @@ public class MainViewModel extends androidx.lifecycle.ViewModel {
         return listWork;
     }
 
+    public LiveData<Long> getIdInsert(){
+        return idInsert;
+    }
+
     public void queryListWork(){
         workRespository.getListWork();
+    }
+
+    public void queryInsertWork(WorkEntity workEntity)
+    {
+        workRespository.insertWork(workEntity);
     }
 }
