@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.mmvm_room_databiding.R;
+import com.example.mmvm_room_databiding.classes.Dialog.AppDialog;
 import com.example.mmvm_room_databiding.classes.adapter.WorkAdapter;
 import com.example.mmvm_room_databiding.data.model.entities.WorkEntity;
 import com.example.mmvm_room_databiding.databinding.ActivityMainBinding;
@@ -90,6 +91,17 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId())
         {
             case R.id.menu_create:
+                AppDialog.createDialog(this, new AppDialog.onListenClickDialog() {
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onSave(String title, String message) {
+
+                    }
+                });
                 break;
         }
         return super.onOptionsItemSelected(item);
