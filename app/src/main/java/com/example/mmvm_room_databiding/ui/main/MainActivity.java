@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.mmvm_room_databiding.R;
 import com.example.mmvm_room_databiding.classes.adapter.WorkAdapter;
@@ -82,5 +83,15 @@ public class MainActivity extends AppCompatActivity {
 //        return true;
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.menu_create:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
