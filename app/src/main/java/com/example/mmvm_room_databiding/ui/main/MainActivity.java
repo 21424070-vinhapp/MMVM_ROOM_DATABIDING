@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import com.example.mmvm_room_databiding.R;
 import com.example.mmvm_room_databiding.classes.adapter.WorkAdapter;
@@ -30,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        workAdapter=new WorkAdapter(this);
-        activityMainBinding.recyckerViewWork.setAdapter(workAdapter);
 
         mainViewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
             @NonNull
@@ -41,12 +41,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }).get(MainViewModel.class);
 
+        workAdapter = new WorkAdapter(this);
+        activityMainBinding.recyckerViewWork.setAdapter(workAdapter);
+
         mainViewModel.getListWork().observe(this, new Observer<List<WorkEntity>>() {
             @Override
             public void onChanged(List<WorkEntity> workEntities) {
                 //Log.d("BBB", "Total: " + workEntities.size());
-                if(workEntities!=null && workEntities.size()>0)
-                {
+                if (workEntities != null && workEntities.size() > 0) {
                     workAdapter.updateListWork(workEntities);
                 }
             }
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         mainViewModel.getIdInsert().observe(this, new Observer<Long>() {
             @Override
             public void onChanged(Long aLong) {
-                Log.d(TAG, "Row: "+aLong);
+                Log.d(TAG, "Row: " + aLong);
             }
         });
 
@@ -70,8 +72,15 @@ public class MainActivity extends AppCompatActivity {
                 WorkEntity workEntity = new WorkEntity("to do 3", "nothing 3");
                 mainViewModel.queryInsertWork(workEntity);
             }
-        },100);
+        }, 100);
+    }
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater=getMenuInflater();
+//        inflater.inflate(R.menu.menu_main,menu);
+//        return true;
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }
