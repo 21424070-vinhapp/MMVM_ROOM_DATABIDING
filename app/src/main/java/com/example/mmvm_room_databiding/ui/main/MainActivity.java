@@ -7,18 +7,22 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.mmvm_room_databiding.R;
 import com.example.mmvm_room_databiding.classes.Dialog.AppDialog;
 import com.example.mmvm_room_databiding.classes.adapter.WorkAdapter;
 import com.example.mmvm_room_databiding.data.model.entities.WorkEntity;
 import com.example.mmvm_room_databiding.databinding.ActivityMainBinding;
+import com.example.mmvm_room_databiding.databinding.DialogUpdateWorkBinding;
 
 import java.util.List;
 
@@ -28,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "BBB";
     WorkAdapter workAdapter;
     ActivityMainBinding activityMainBinding;
-
+    private WorkEntity workEntity;
+    private DialogUpdateWorkBinding dialogUpdateWorkBinding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,25 +61,55 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mainViewModel.getIdInsert().observe(this, new Observer<Long>() {
-            @Override
-            public void onChanged(Long aLong) {
-                Log.d(TAG, "Row: " + aLong);
-            }
-        });
+//        mainViewModel.getIdInsert().observe(this, new Observer<Long>() {
+//            @Override
+//            public void onChanged(Long aLong) {
+//                Log.d(TAG, "Row: " + aLong);
+//            }
+//        });
 
 
         //get list work in db
         mainViewModel.queryListWork();
 
-        new Handler().postDelayed(new Runnable() {
+        workAdapter.setOnItemClickListener(new WorkAdapter.OnListenClickItem() {
             @Override
-            public void run() {
-                //insert work in db
-                WorkEntity workEntity = new WorkEntity("to do 3", "nothing 3");
-                mainViewModel.queryInsertWork(workEntity);
+            public void onClickDelete(int position) {
+                AppDialog.createDialogDelete(MainActivity.this, new AppDialog.onListenClickDelete() {
+                    @Override
+                    public void onDelete() {
+                        mainViewModel.queryDeleteWork(workAdapter.getLstWork().get(position));
+                    }
+                });
             }
-        }, 100);
+
+            @Override
+            public void onClickUpdate(int position) {
+                workEntity=workAdapter.getLstWork().get(position);
+
+                //Log.d(TAG, "onClickUpdate: "+workEntity.getTitle());
+                AppDialog.createDialogUpdate(MainActivity.this, new AppDialog.onListenClickUpdate() {
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onUpdate(String title, String message) {
+                        //Log.d(TAG, "onUpdate: "+title);
+                        if (title.isEmpty() && message.isEmpty()) {
+                            Toast.makeText(MainActivity.this, "Empty data", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        workEntity.setTitle(title);
+                        workEntity.setMessage(message);
+                        mainViewModel.queryUpdateWork(workEntity);
+                    }
+                });
+            }
+        });
+
     }
 
     @Override
@@ -88,8 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.menu_create:
                 AppDialog.createDialog(this, new AppDialog.onListenClickDialog() {
                     @Override
@@ -99,7 +133,11 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onSave(String title, String message) {
-
+                        if (title.isEmpty() && message.isEmpty()) {
+                            Toast.makeText(MainActivity.this, "Empty data", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        mainViewModel.queryInsertWork(new WorkEntity(title, message));
                     }
                 });
                 break;

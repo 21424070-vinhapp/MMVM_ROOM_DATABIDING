@@ -20,26 +20,36 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainViewModel extends androidx.lifecycle.ViewModel {
-    private MutableLiveData<List<WorkEntity>>  listWork=new MutableLiveData<>();
-    private MutableLiveData<Long>  idInsert=new MutableLiveData<>();
+    private MutableLiveData<List<WorkEntity>> listWork = new MutableLiveData<>();
+    private MutableLiveData<Long> idInsert = new MutableLiveData<>();
+    private MutableLiveData<Integer> isDelete = new MutableLiveData<>();
+    private MutableLiveData<Integer> isUpdate = new MutableLiveData<>();
     private WorkRespository workRespository;
     private Context context;
 
-    public MainViewModel(Context context)
-    {
-        this.context=context;
-        workRespository=new WorkRespository(context);
+    public MainViewModel(Context context) {
+        this.context = context;
+        workRespository = new WorkRespository(context);
     }
 
-    public LiveData<List<WorkEntity>> getListWork(){
+    public LiveData<List<WorkEntity>> getListWork() {
         return listWork;
     }
 
-    public LiveData<Long> getIdInsert(){
+    public LiveData<Long> getIdInsert() {
         return idInsert;
     }
 
-    public void queryListWork(){
+    public LiveData<Integer> isDelete() {
+        return isDelete;
+    }
+
+    public LiveData<Integer> isUpdate() {
+        return isUpdate;
+    }
+
+
+    public void queryListWork() {
         workRespository
                 .getListWork()
                 .subscribeOn(Schedulers.io())
@@ -67,8 +77,7 @@ public class MainViewModel extends androidx.lifecycle.ViewModel {
                 });
     }
 
-    public void queryInsertWork(WorkEntity workEntity)
-    {
+    public void queryInsertWork(WorkEntity workEntity) {
         workRespository
                 .insertWork(workEntity)
                 .subscribeOn(Schedulers.io())
@@ -82,6 +91,62 @@ public class MainViewModel extends androidx.lifecycle.ViewModel {
                     @Override
                     public void onSuccess(@NonNull Long aLong) {
                         idInsert.setValue(aLong);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void queryDeleteWork(WorkEntity workEntity) {
+        workRespository
+                .deleteWork(workEntity)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MaybeObserver<Integer>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Integer integer) {
+                        isDelete.setValue(integer);
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void queryUpdateWork(WorkEntity workEntity) {
+        workRespository
+                .updateWork(workEntity)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new MaybeObserver<Integer>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Integer integer) {
+                        isUpdate.setValue(integer);
                     }
 
                     @Override

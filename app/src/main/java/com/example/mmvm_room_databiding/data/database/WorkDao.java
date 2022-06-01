@@ -1,8 +1,10 @@
 package com.example.mmvm_room_databiding.data.database;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.mmvm_room_databiding.data.model.entities.WorkEntity;
 
@@ -19,4 +21,10 @@ public interface WorkDao {
 
     @Insert
     Maybe<Long> insertWork(WorkEntity workEntity);
+
+    @Delete
+    Maybe<Integer> deleteWork(WorkEntity workEntity);
+
+    @Update
+    Maybe<Integer> updateWork(WorkEntity workEntity);
 }

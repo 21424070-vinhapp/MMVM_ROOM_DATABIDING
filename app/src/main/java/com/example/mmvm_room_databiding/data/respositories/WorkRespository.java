@@ -28,4 +28,14 @@ public class WorkRespository {
     {
         return workDao.insertWork(workEntity);
     }
+
+    public Maybe<Integer> deleteWork(WorkEntity workEntity)
+    {
+        return workDao.deleteWork(workEntity);
+    }
+
+    public Maybe<Integer> updateWork(WorkEntity workEntity)
+    {
+        return workDao.updateWork(workEntity);
+    }
 }

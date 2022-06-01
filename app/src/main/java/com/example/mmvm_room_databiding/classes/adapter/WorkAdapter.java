@@ -1,6 +1,7 @@
 package com.example.mmvm_room_databiding.classes.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,10 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mmvm_room_databiding.R;
+import com.example.mmvm_room_databiding.classes.Dialog.AppDialog;
 import com.example.mmvm_room_databiding.data.model.entities.WorkEntity;
 import com.example.mmvm_room_databiding.databinding.ItemWorkBinding;
+import com.example.mmvm_room_databiding.ui.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,8 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.WorkViewholder
     private LayoutInflater layoutInflater;
 
     private LifecycleOwner lifecycleOwner;
+
+    private OnListenClickItem onListenClickItem;
 
     public WorkAdapter(LifecycleOwner lifecycleOwner) {
         lstWork = new ArrayList<>();
@@ -38,6 +43,11 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.WorkViewholder
 
         lstWork.addAll(workEntityList);
         notifyDataSetChanged();
+    }
+
+    public List<WorkEntity> getLstWork()
+    {
+        return lstWork;
     }
 
     @NonNull
@@ -71,6 +81,26 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.WorkViewholder
         public WorkViewholder(@NonNull ItemWorkBinding itemView) {
             super(itemView.getRoot());
             itemWorkBinding = itemView;
+
+            itemWorkBinding.imgDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(onListenClickItem!=null)
+                    {
+                        onListenClickItem.onClickDelete(getAdapterPosition());
+                    }
+                }
+            });
+
+            itemWorkBinding.imgUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(onListenClickItem!=null)
+                    {
+                        onListenClickItem.onClickUpdate(getAdapterPosition());
+                    }
+                }
+            });
         }
 
         void bind(WorkEntity workEntity) {
@@ -78,4 +108,16 @@ public class WorkAdapter extends RecyclerView.Adapter<WorkAdapter.WorkViewholder
             itemWorkBinding.setLifecycleOwner(lifecycleOwner);
         }
     }
+
+    public void setOnItemClickListener(OnListenClickItem onItemClickListener) {
+        this.onListenClickItem=onItemClickListener;
+    }
+
+    public interface OnListenClickItem {
+        void onClickDelete(int position);
+        void onClickUpdate(int position);
+    }
+
+
+
 }
